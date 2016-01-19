@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
         <!-- <script src="usgs.js" ></script> -->
-        <script src="usgs.js"></script>
+        <script src="statenames.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
         <script src="node_modules/datamaps/dist/datamaps.all.min.js"></script>
         <title></title>
@@ -17,10 +17,8 @@
         </div>
     <script>
         var bubbles = [];
-        //make sure to display the magnitudes as logarthmic scales
-        // var magnitude = d3.scale.log().range([2,25])
 
-        var data = d3.json('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', callout)
+        var data = d3.json('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', drawBubbles)
         var map = new Datamap({ element: document.getElementById('map'),
                                 scope: "usa" ,
                                 done: function(datamap) {
@@ -32,7 +30,7 @@
                                 }
                             });
         // document.setTimeout(map.bubbles(bubbles), 5000)
-        function callout(data){
+        function drawBubbles(data){
             for(var i = 0; i < data.features.length; i++){
                 // console.log(data.features[i], "DJA")
                 var name = data.features[i].properties.title;
