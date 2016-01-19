@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
         <!-- <script src="usgs.js" ></script> -->
+        <script src="usgs.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
         <script src="node_modules/datamaps/dist/datamaps.all.min.js"></script>
         <title></title>
@@ -16,20 +17,42 @@
         </div>
     <script>
         var bubbles = [];
+        //make sure to display the magnitudes as logarthmic scales
+        // var magnitude = d3.scale.log().range([2,25])
+
         var data = d3.json('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', callout)
-        var map = new Datamap({ element: document.getElementById('map'), scope: "usa" });
+        var map = new Datamap({ element: document.getElementById('map'),
+                                scope: "usa" ,
+                                done: function(datamap) {
+                                    datamap.svg.selectAll('.datamaps-subunit').on('click',
+                                    function(geography) {
+                                        console.log(geography)
+                                        zoomin(geography);
+                                    });
+                                }
+                            });
         // document.setTimeout(map.bubbles(bubbles), 5000)
         function callout(data){
             for(var i = 0; i < data.features.length; i++){
                 // console.log(data.features[i], "DJA")
-                bubbles.push({
-                    "latitude": data.features[i].geometry.coordinates[1],
-                    "longitude": data.features[i].geometry.coordinates[0],
-                    "radius": data.features[i].geometry.coordinates[2]
-                });
+                var name = data.features[i].properties.title;
+                var placeName = name.slice(name.lastIndexOf(',')+2);
+                if(states.indexOf(placeName)>-1){
+                    console.log(placeName)
+                    bubbles.push({
+                        "place": name,
+                        "latitude": data.features[i].geometry.coordinates[1],
+                        "longitude": data.features[i].geometry.coordinates[0],
+                        "radius": data.features[i].properties.mag*4
+                    });
+                }
             }
             console.log(bubbles)
-            map.bubbles(bubbles)
+            map.bubbles(bubbles, {
+                popupTemplate: function(geo, data) {
+                    return "<div class='hoverinfo'>Earthquake for " + data.place + "";
+                }
+            })
         }
     </script>
     </body>
