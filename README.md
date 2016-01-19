@@ -14,6 +14,6 @@ Dan
 - [ ] Get something running
 
 Rob
-- [ ] Set up app
-- [ ] Setup github repo/ project
-- [ ] Get data from website routed to Dan
+- [x] Set up app
+- [x] Setup github repo/ project
+- [x] Get data from website routed to Dan
