@@ -1,5 +1,5 @@
 # quake
-
+Index pulls from the last day of 2.5+mag quakes.  must have statenames.js in the same directory as index.html
 # To-do
 
 ##January 18, 2016
