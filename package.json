@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/RobbyRob81/quake#readme",
   "dependencies": {
-    "express": "^4.13.3"
+    "datamaps": "^0.4.2",
+    "express": "^4.13.3",
+    "topojson": "^1.6.20"
   }
 }
