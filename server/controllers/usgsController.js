@@ -21,9 +21,7 @@ var usgsController = {
     // get usgs data
     // /////////////////////////////////////////////
     request('http://earthquake.usgs.gov/fdsnws/event/1/application.json', function (error, response, body) {
-        //Check for error
-        // var d = new Date();
-        // var n = d.getMinutes();
+
 
         if(error){
             return console.log('Error:', error);

@@ -1,30 +1,43 @@
+// /////////////////////////////////////////////
+// require express | standard
+// /////////////////////////////////////////////
 var express = require('express');
-//var bodyParser = require('body-parser')
+var app = express();
+
+// /////////////////////////////////////////////
+// NPM dependencies | production
+// /////////////////////////////////////////////
+var bodyParser = require('body-parser')
 var request = require('request');
 var apicache = require('apicache').options({ debug: true }).middleware;
 
 
-var app = express();
-
 // /////////////////////////////////////////////
-// custom middlewear
+// Custom middleware
 // /////////////////////////////////////////////
 var usgsController = require('./controllers/usgsController.js');
 
 // /////////////////////////////////////////////
-// global app tools
+// Mount middleware
 // /////////////////////////////////////////////
-//app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
+app.use(bodyParser.json({limit: '10mb'}));
 
 
 // /////////////////////////////////////////////
 // Routes
-// /////////////////////////////////////////////a
-app.get('/', apicache('5 minutes'), usgsController.getData, function (req, res) {
+// /////////////////////////////////////////////
 
-   res.send('Hello World!');
-});
+//** this works, but using .post from postman for testing**//
+// app.get('/', apicache('5 minutes'), usgsController.getData, function (req, res) {
+//
+//    res.send('Hello World!');
+// });
+
+app.post('/usgsData', function(req, res){
+  console.log(JSON.stringify(req.body, null, '\t'));
+  res.send(JSON.stringify(req.body, null, '\t'));
+} );
 
 
 
