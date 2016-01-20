@@ -51,3 +51,5 @@ var states = [
     "Wisconsin",
     "Wyoming"
 ]
+
+// module.exports = states;

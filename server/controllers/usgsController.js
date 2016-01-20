@@ -1,16 +1,6 @@
-var express = require('express');
-var bodyParser = require('body-parser')
 var request = require('request');
 
-var app = express();
-
-
 var usgsController = {
-  // getData: function(req, res, next) {
-  //   request('http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02', function(error, response, html) {
-  //     return res.send(output);
-  //     console.log(req.body);
-  //   });
 
   //Lets try to make a HTTPS GET request to modulus.io's website.
   //All we did here to make HTTPS call is changed the `http` to `https` in URL.
@@ -20,7 +10,8 @@ var usgsController = {
     // /////////////////////////////////////////////
     // get usgs data
     // /////////////////////////////////////////////
-    request('http://earthquake.usgs.gov/fdsnws/event/1/application.json', function (error, response, body) {
+    request('http://earthquake.usgs.gov/fdsnws/event/1/application.json',
+            function (error, response, body) {
 
 
         if(error){
