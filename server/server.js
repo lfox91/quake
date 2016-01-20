@@ -7,7 +7,7 @@ var app = express();
 // /////////////////////////////////////////////
 // NPM DEPENDANCIES: production
 // /////////////////////////////////////////////
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 var request = require('request');
 var apicache = require('apicache').options({ debug: true }).middleware;
 var path = require('path');
@@ -27,15 +27,22 @@ var usgsController = require('./controllers/usgsController.js');
   // /////////////////////////////////////////////
   app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
   app.use(bodyParser.json({limit: '10mb'}));
-  app.use(express.static(path.join(__dirname, 'client')));
+  // /////////////////////////////////////////////
+  //Static route was originally as follows, but since you need to go up a directory
+  // you need to type that in, instead of just client, since client here would be
+  // server/client
+  // /////////////////////////////////////////////
+  //app.use(express.static(path.join(__dirname, 'client')));
+
+  app.use(express.static(path.join(__dirname, './../client')));
 
 // /////////////////////////////////////////////
 // ROUTES:
 // /////////////////////////////////////////////
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../client', 'index.html'));
-});
+// app.get('/', function (req, res) {
+//   res.sendFile(path.join(__dirname, '../client', 'index.html'));
+// });
 
 // /////////////////////////////////////////////
 // APICHE: cache and set req time for USGS Api

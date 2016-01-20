@@ -15,9 +15,9 @@ function handleErrors() {
 }
 
 gulp.task('browserify', function(){
-  
+
   var bundler = browserify({
-    entries: ['./client/App.js'],
+    entries: ['./client/js/main.js'],
     transform: babelify.configure({
                 presets: ["react", "es2015", 'stage-0']
                 }),
@@ -28,8 +28,9 @@ gulp.task('browserify', function(){
   function rebundle(){
     watching();
     return bundler.bundle()
+    .on("error", function(err) { console.error(err) })
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./build/'));
+    .pipe(gulp.dest('./client/build/'));
   }
 
    function watching(){
@@ -40,7 +41,7 @@ gulp.task('browserify', function(){
        console.log('Updating!');
        watcher.bundle()
        .pipe(source('bundle.js'))
-       .pipe(gulp.dest('./build/'));
+       .pipe(gulp.dest('./client/build/'));
        console.log('Updated!', (Date.now()-updateStart)+'ms');
      });
    }
