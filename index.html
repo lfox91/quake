@@ -1,57 +1,62 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
-        <!-- <script src="usgs.js" ></script> -->
-        <script src="statenames.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-        <script src="node_modules/datamaps/dist/datamaps.all.min.js"></script>
-        <title></title>
-    </head>
-    <body>
-        <div id="bubbles"></div>
 
-        <div id="map" style="position: relative; width: 1000px; height: 800px;"></div>
-        </div>
-        </div>
+  <head>
+    <meta charset="utf-8">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <!-- <script src="usgs.js" ></script> -->
+    <script src="./client/statenames.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="node_modules/datamaps/dist/datamaps.all.min.js"></script>
+    <title></title>
+  </head>
+
+  <body>
+    <div id="bubbles"></div>
+
+    <div id="map" style="position: relative; width: 1000px; height: 800px;"></div>
+    </div>
+    </div>
     <script>
-        var bubbles = [];
+      var bubbles = [];
 
-        var data = d3.json('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', drawBubbles)
-        var map = new Datamap({ element: document.getElementById('map'),
-                                scope: "usa" ,
-                                done: function(datamap) {
-                                    datamap.svg.selectAll('.datamaps-subunit').on('click',
-                                    function(geography) {
-                                        console.log(geography)
-                                        zoomin(geography);
-                                    });
-                                }
-                            });
-        // document.setTimeout(map.bubbles(bubbles), 5000)
-        function drawBubbles(data){
-            for(var i = 0; i < data.features.length; i++){
-                // console.log(data.features[i], "DJA")
-                var name = data.features[i].properties.title;
-                var placeName = name.slice(name.lastIndexOf(',')+2);
-                if(states.indexOf(placeName)>-1){
-                    console.log(placeName)
-                    bubbles.push({
-                        "place": name,
-                        "latitude": data.features[i].geometry.coordinates[1],
-                        "longitude": data.features[i].geometry.coordinates[0],
-                        "radius": data.features[i].properties.mag*4
-                    });
-                }
-            }
-            console.log(bubbles)
-            map.bubbles(bubbles, {
-                popupTemplate: function(geo, data) {
-                    return "<div class='hoverinfo'>Earthquake for " + data.place + "";
-                }
-            })
+      var data = d3.json('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', drawBubbles)
+      var map = new Datamap({
+        element: document.getElementById('map'),
+        scope: "usa",
+        done: function(datamap) {
+          datamap.svg.selectAll('.datamaps-subunit').on('click',
+            function(geography) {
+              console.log(geography)
+              zoomin(geography);
+            });
         }
+      });
+      // document.setTimeout(map.bubbles(bubbles), 5000)
+      function drawBubbles(data) {
+        for (var i = 0; i < data.features.length; i++) {
+          // console.log(data.features[i], "DJA")
+          var name = data.features[i].properties.title;
+          var placeName = name.slice(name.lastIndexOf(',') + 2);
+          if (states.indexOf(placeName) > -1) {
+            console.log(placeName)
+            bubbles.push({
+              "place": name,
+              "latitude": data.features[i].geometry.coordinates[1],
+              "longitude": data.features[i].geometry.coordinates[0],
+              "radius": data.features[i].properties.mag * 4
+            });
+          }
+        }
+        console.log(bubbles)
+        map.bubbles(bubbles, {
+          popupTemplate: function(geo, data) {
+            return "<div class='hoverinfo'>Earthquake for " + data.place + "";
+          }
+        })
+      }
+
     </script>
-    </body>
+  </body>
+
 </html>
