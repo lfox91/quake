@@ -7,7 +7,7 @@ var app = express();
 // /////////////////////////////////////////////
 // NPM DEPENDANCIES: production
 // /////////////////////////////////////////////
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 var request = require('request');
 var apicache = require('apicache').options({ debug: true }).middleware;
 var path = require('path');
@@ -24,27 +24,30 @@ var usgsController = require('./controllers/usgsController.js');
   // /////////////////////////////////////////////
   // Parse incoming data. Limit parameter added
   // due to the large object from the usgs api.
+  // TODO: Review USGS API and optimize limit.
   // /////////////////////////////////////////////
   app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
   app.use(bodyParser.json({limit: '10mb'}));
-  app.use(express.static(path.join(__dirname, 'client')));
+  app.use(express.static(path.join(__dirname, './../client')));
 
 // /////////////////////////////////////////////
 // ROUTES:
 // /////////////////////////////////////////////
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '../client', 'index.html'));
-});
+// app.get('/', function (req, res) {
+//   res.sendFile(path.join(__dirname, '../client', 'index.html'));
+// });
 
 // /////////////////////////////////////////////
-// APICHE: cache and set req time for USGS Api
+// APICHE: cache and set req time for USGS api req
+// STATUS: Working
+// TODO: Integrate into API
 // /////////////////////////////////////////////
 
-//  |-- STATUS: Working  USE: enable when ready to use real data --|
-//  app.get('/', apicache('5 minutes'), usgsController.getData, function (req, res) {
-//   res.send('Hello World!');
-//  });
+  //  app.get('/', apicache('5 minutes'), usgsController.getData,
+  //          function (req, res) {
+  //           res.send('Hello World!');
+  //          });
 
 // /////////////////////////////////////////////
 // POSTMAN: dev route to test usgs api's
@@ -55,7 +58,7 @@ app.post('/usgsData', function(req, res){
 } );
 
 // /////////////////////////////////////////////
-// START SERVER
+// START SERVER:
 // /////////////////////////////////////////////
 app.listen(3000, function () {
   console.log('Quake App running on port 3000!');
