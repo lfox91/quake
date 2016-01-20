@@ -44,7 +44,6 @@ var usgsController = require('./controllers/usgsController.js');
 //   res.sendFile(path.join(__dirname, '../client', 'index.html'));
 // });
 
-
 // /////////////////////////////////////////////
 // APICHE: cache and set req time for USGS Api
 // /////////////////////////////////////////////
@@ -53,7 +52,6 @@ var usgsController = require('./controllers/usgsController.js');
 //  app.get('/', apicache('5 minutes'), usgsController.getData, function (req, res) {
 //   res.send('Hello World!');
 //  });
-
 
 // /////////////////////////////////////////////
 // POSTMAN: dev route to test usgs api's
@@ -67,7 +65,7 @@ app.post('/usgsData', function(req, res){
 // START SERVER
 // /////////////////////////////////////////////
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Quake App running on port 3000!');
 });
 
 

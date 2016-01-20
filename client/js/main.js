@@ -1,4 +1,5 @@
-// var states = require('statenames.js');
+var states = require('./statenames.js');
+var Datamap = require('datamaps')
 var bubbles = [];
 //move data to server for api
 var data = d3.json('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', drawBubbles)

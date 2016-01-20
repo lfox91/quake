@@ -2,8 +2,14 @@ var request = require('request');
 
 var usgsController = {
 
-  //Lets try to make a HTTPS GET request to modulus.io's website.
-  //All we did here to make HTTPS call is changed the `http` to `https` in URL.
+  // /////////////////////////////////////////////
+  // GETDATA METHOD:  runs request for usgs data
+  // for the last 24hours.
+  //
+  // NOTICE: This api is updated every 5 minutes.
+  // ApiCache middleware handles the both caching
+  // and intervals.
+  // /////////////////////////////////////////////
 
   getData: function(req, res, next) {
 
@@ -29,6 +35,7 @@ var usgsController = {
     });//end request
 
  }//end getData method
+
 
 }//usgsController obj
 

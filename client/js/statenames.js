@@ -52,4 +52,4 @@ var states = [
     "Wyoming"
 ]
 
-// module.exports = states;
+module.exports = states;
