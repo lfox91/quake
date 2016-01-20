@@ -1,14 +1,16 @@
 var states = require('./statenames.js');
-var Datamap = require('datamaps')
+var datamap = require('datamaps');
 var bubbles = [];
 //move data to server for api
-var data = d3.json('http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', drawBubbles)
+const earl =
+'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson';
+var data = d3.json(earl, drawBubbles);
 var map = new Datamap({ element: document.getElementById('map'),
                         scope: "usa" ,
                         done: function(datamap) {
                             datamap.svg.selectAll('.datamaps-subunit').on('click',
                             function(geography) {
-                                console.log(geography)
+                                console.log(geography);
                                 zoomin(geography);
                             });
                         }
@@ -20,7 +22,7 @@ function drawBubbles(data){
         var name = data.features[i].properties.title;
         var placeName = name.slice(name.lastIndexOf(',')+2);
         if(states.indexOf(placeName)>-1){
-            console.log(placeName)
+            console.log(placeName);
             bubbles.push({
                 "place": name,
                 "latitude": data.features[i].geometry.coordinates[1],
@@ -29,10 +31,10 @@ function drawBubbles(data){
             });
         }
     }
-    console.log(bubbles)
+    console.log(bubbles);
     map.bubbles(bubbles, {
         popupTemplate: function(geo, data) {
             return "<div class='hoverinfo'>Earthquake for " + data.place + "";
         }
-    })
+    });
 }

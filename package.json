@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/server.js"
   },
+  "jshintConfig": {
+    "esnext": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RobbyRob81/quake.git"

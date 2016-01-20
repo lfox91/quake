@@ -28,7 +28,7 @@ gulp.task('browserify', function(){
   function rebundle(){
     watching();
     return bundler.bundle()
-    .on("error", function(err) { console.error(err) })
+    .on("error", function(err) { console.error(err); })
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./client/build/'));
   }
