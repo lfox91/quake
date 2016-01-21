@@ -20,7 +20,7 @@ function drawBubbles(data){
         var name = data.features[i].properties.title;
         var placeName = name.slice(name.lastIndexOf(',')+2);
         if(states.indexOf(placeName)>-1){
-            console.log(placeName)
+            // console.log(placeName)
             bubbles.push({
                 "place": name,
                 "latitude": data.features[i].geometry.coordinates[1],
@@ -29,9 +29,10 @@ function drawBubbles(data){
             });
         }
     }
-    console.log(bubbles)
+    // console.log(bubbles)
     map.bubbles(bubbles, {
         popupTemplate: function(geo, data) {
+            
             return "<div class='hoverinfo'>Earthquake for " + data.place + "";
         }
     })
