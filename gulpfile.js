@@ -4,7 +4,6 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var watchify = require('watchify');
 
-
 function handleErrors() {
   var args = Array.prototype.slice.call(arguments);
   notify.onError({
@@ -17,9 +16,9 @@ function handleErrors() {
 gulp.task('browserify', function(){
 
   var bundler = browserify({
-    entries: ['./client/js/main.js'],
+    entries: ['./client/App.js'],
     transform: babelify.configure({
-                presets: ["react", "es2015", 'stage-0']
+                presets: ["react", "es2015"]
                 }),
     debug: true,
     cache: {}, packageCache: {}, fullPaths: true

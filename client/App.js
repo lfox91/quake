@@ -1,24 +1,17 @@
-/* jshint esnext:true*/
 import React from 'react';
-import {render} from 'react-dom'
+import {render} from 'react-dom';
+import Map from './components/Map';
+import Head from './components/Head';
 
 class App extends React.Component{
-  constructor(){
-    super();
-    state = {
-      textStream:[],
-      mapStream: []
-    };
-  }
   render(){
     return(
-      <App>
+      <div>
         <Head/>
         <Map/>
-        <Foot/>
-      <App/>
-    )
+      </div>
+    );
   }
 }
-render('App', document.getElementById('container'));
-export default App;
+
+render(<App/>, document.getElementById('container'));
