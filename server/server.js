@@ -34,9 +34,9 @@ var usgsController = require('./controllers/usgsController.js');
 // ROUTES:
 // /////////////////////////////////////////////
 
-// app.get('/', function (req, res) {
-//   res.sendFile(path.join(__dirname, '../client', 'index.html'));
-// });
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
+});
 
 // /////////////////////////////////////////////
 // APICHE: cache and set req time for USGS api req
