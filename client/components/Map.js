@@ -17,27 +17,12 @@ export default class Map extends React.Component{
     var map = new Datamap({ element: document.getElementById('map'),
                             scope: "usa",
                             fills: {'main':'#604f16', defaultFill:'#448135'}});
-    const earl =
-    '/data';
+    //Request the JSON Data (already filtered) from our server
+    const earl = '/data';
     d3.json(earl, drawBubbles);
 
     function drawBubbles(err, data){
-      var bubbles = [];
-      if(err)return err;
-      for(var i = 0; i < data.features.length; i++){
-          var name = data.features[i].properties.title;
-          var placeName = name.slice(name.lastIndexOf(',')+2);
-          if(states.indexOf(placeName)>-1){
-              bubbles.push({
-                  place: name,
-                  latitude: data.features[i].geometry.coordinates[1],
-                  longitude: data.features[i].geometry.coordinates[0],
-                  radius: data.features[i].properties.mag*4,
-                  fillKey: 'main'
-              });
-          }
-      }
-      map.bubbles(bubbles, {
+        map.bubbles(data, {
           popupTemplate: function(geo, data) {
             return "<div class='hoverinfo'>Earthquake for " + data.place + "";
           },
