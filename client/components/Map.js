@@ -18,7 +18,7 @@ export default class Map extends React.Component{
                             scope: "usa",
                             fills: {'main':'#604f16', defaultFill:'#448135'}});
     const earl =
-    'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson';
+    '/data';
     d3.json(earl, drawBubbles);
 
     function drawBubbles(err, data){
@@ -28,7 +28,6 @@ export default class Map extends React.Component{
           var name = data.features[i].properties.title;
           var placeName = name.slice(name.lastIndexOf(',')+2);
           if(states.indexOf(placeName)>-1){
-              console.log(placeName);
               bubbles.push({
                   place: name,
                   latitude: data.features[i].geometry.coordinates[1],

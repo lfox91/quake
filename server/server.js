@@ -53,7 +53,10 @@ app.get('/', function (req, res) {
          function (req, res) {
           res.sendStatus(200);
          });
-
+ app.get('/data',  usgsController.getData, usgsController.findLocation,
+         function (req, res) {
+          res.sendStatus(200);
+         });
 // /////////////////////////////////////////////
 // POSTMAN: dev route to test usgs api's
 // /////////////////////////////////////////////
