@@ -1,5 +1,6 @@
 var request = require('request');
 var bodyParser = require('body-parser');
+var states = require('./statenames');
 
 // /////////////////////////////////////////////
 // USGS API's:
@@ -58,27 +59,27 @@ var usgsController = {
   findLocation:  function(req, res, next){
     var bubbles = [];
     console.log('finding USA locations');
-    var quakeLocation = req.body.features;
-    console.log(quakeLocation);
+    var quakeLocation = req.body;
+    // console.log(quakeLocation);
 
-    for(var i = 0; i < quakeTwoDay.features.length; i++){
+    for(var i = 0; i < quakeLocation.features.length; i++){
         // console.log(data.features[i], "DJA")
-        var name = quakeTwoDay.features[i].properties.title;
+        var name = quakeLocation.features[i].properties.title;
         var placeName = name.slice(name.lastIndexOf(',')+2);
 
         if(states.indexOf(placeName)>-1){
             bubbles.push({
                 "place": name,
-                "latitude": quakeTwoDay.features[i].geometry.coordinates[1],
-                "longitude": quakeTwoDay.features[i].geometry.coordinates[0],
-                "radius": quakeTwoDay.features[i].properties.mag*4
+                "latitude": quakeLocation.features[i].geometry.coordinates[1],
+                "longitude": quakeLocation.features[i].geometry.coordinates[0],
+                "radius": quakeLocation.features[i].properties.mag*4
             });
         }
     }
-     //console.log('Map bubbles:    ', bubbles)
+     console.log('Map bubbles:    ', bubbles)
     map.bubbles(bubbles, {
-        popupTemplate: function(geo, quakeTwoDay) {
-            return "<div class='hoverinfo'>Earthquake for " + quakeTwoDay.place + "";
+        popupTemplate: function(geo, quakeLocation) {
+            return "<div class='hoverinfo'>Earthquake for " + quakeLocation.place + "";
         }
     })
 
