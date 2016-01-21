@@ -40,7 +40,7 @@ var usgsController = require('./controllers/usgsController.js');
 
 // /////////////////////////////////////////////
 // APICHE: cache and set req time for USGS api req
-// STATUS: Working
+// STATUS: cache working, API in Progress
 // TODO: Integrate into API
 // /////////////////////////////////////////////
 
@@ -49,12 +49,18 @@ var usgsController = require('./controllers/usgsController.js');
   //           res.send('Hello World!');
   //          });
 
+ app.get('/', apicache('5 minutes'), usgsController.getData,
+         function (req, res) {
+          res.sendStatus(200);
+         });
+
 // /////////////////////////////////////////////
 // POSTMAN: dev route to test usgs api's
 // /////////////////////////////////////////////
-app.post('/usgsData', function(req, res){
-  console.log(JSON.stringify(req.body, null, '\t'));
-  res.send(JSON.stringify(req.body, null, '\t'));
+app.post('/usgsData', usgsController.getData, usgsController.findLocation,  function(req, res, next){
+  // console.log(JSON.stringify(req.body, null, '\t'));
+  // res.send(JSON.stringify(req.body, null, '\t'));
+  res.send('got it');
 } );
 
 // /////////////////////////////////////////////

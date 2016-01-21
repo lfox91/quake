@@ -1,3 +1,10 @@
+// /////////////////////////////////////////////
+// MAP STATE
+// TODO: Refactor to server after main.JSON
+// has been Refactored.
+// 
+//////////////////////////////////////////////
+
 var states = [
     "Alabama",
     "Alaska",

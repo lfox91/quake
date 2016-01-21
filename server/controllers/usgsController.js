@@ -1,8 +1,16 @@
 var request = require('request');
+var bodyParser = require('body-parser');
+
+// /////////////////////////////////////////////
+// USGS API's:
+// twoDay: 2.5 day max feed from USGS
+// /////////////////////////////////////////////
+
+
 
 var usgsController = {
 
-  // /////////////////////////////////////////////
+  //////////////////////////////////////////////
   // GETDATA METHOD:  runs request for usgs data
   // for the last 24hours.
   //
@@ -10,40 +18,71 @@ var usgsController = {
   // ApiCache middleware handles the both caching
   // and intervals.
   //
-  //  TODO: Refactor frontend bubbles/data filter
-  //  functions into an api.
+  // TODO: Refactor frontend bubbles/data filter
+  // functions into an api.
   //
-  //   ROUTE       |   HTTP VERB   | DESCRIPTION  
-  //  /api/quakes    GET             Get all quakes from 2.5 day data stream
-  //  /api/quakes    GET             Get all quakes
-  //
+  // ROUTE       |   HTTP VERB   |   STATUS   | DESCRIPTION
+  // /api/quakes    GET             INCOMPLETE   Get 2.5 day data stream
   //
   // /////////////////////////////////////////////
 
+
+
+  // /////////////////////////////////////////////
+  // get usgs data
+  // /////////////////////////////////////////////
   getData: function(req, res, next) {
+    //SUCCESSFULLY PASSES DATA.
+    // console.log('GETDATA FIRED----------------->');
+    // console.log(JSON.stringify(req.body, null, '\t'));
 
-    // /////////////////////////////////////////////
-    // get usgs data
-    // /////////////////////////////////////////////
-    request('http://earthquake.usgs.gov/fdsnws/event/1/application.json',
-            function (error, response, body) {
+    const twoDayDataAPI = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson';
 
+    request(twoDayDataAPI , function (error, response) {
+            if(error){
+                return console.log('Error:', error);
+            }
+            //Check for right status code
+            if(response.statusCode !== 200){
+                return console.log('Invalid Status Code Returned:', response.statusCode);
+            }
+            //console.log('gotData from USGS');
+            //console.log(body);
+            console.log('get finished');
+            next();
+            //res.send(response);
+          });//end request
 
-        if(error){
-            return console.log('Error:', error);
+  },//end getData method
+
+  findLocation:  function(req, res, next){
+    var bubbles = [];
+    console.log('finding USA locations');
+    var quakeLocation = req.body.features;
+    console.log(quakeLocation);
+
+    for(var i = 0; i < quakeTwoDay.features.length; i++){
+        // console.log(data.features[i], "DJA")
+        var name = quakeTwoDay.features[i].properties.title;
+        var placeName = name.slice(name.lastIndexOf(',')+2);
+
+        if(states.indexOf(placeName)>-1){
+            bubbles.push({
+                "place": name,
+                "latitude": quakeTwoDay.features[i].geometry.coordinates[1],
+                "longitude": quakeTwoDay.features[i].geometry.coordinates[0],
+                "radius": quakeTwoDay.features[i].properties.mag*4
+            });
         }
-
-        //Check for right status code
-        if(response.statusCode !== 200){
-            return console.log('Invalid Status Code Returned:', response.statusCode);
+    }
+     //console.log('Map bubbles:    ', bubbles)
+    map.bubbles(bubbles, {
+        popupTemplate: function(geo, quakeTwoDay) {
+            return "<div class='hoverinfo'>Earthquake for " + quakeTwoDay.place + "";
         }
-        console.log(res);
-        //console.log(n);
-        res.send(response);
+    })
 
-    });//end request
-
- }//end getData method
+  }
 
 
 }//usgsController obj
