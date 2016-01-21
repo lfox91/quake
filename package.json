@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/server.js"
   },
+  "jshintConfig": {
+    "esnext": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RobbyRob81/quake.git"
@@ -28,6 +31,9 @@
     "nodemon": "^1.8.1",
     "npm": "^3.5.3",
     "path": "^0.12.7",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "react-style": "^0.5.5",
     "request": "^2.67.0",
     "require": "^2.4.20",
     "topojson": "^1.6.20",

@@ -24,45 +24,47 @@ var usgsController = require('./controllers/usgsController.js');
   // /////////////////////////////////////////////
   // Parse incoming data. Limit parameter added
   // due to the large object from the usgs api.
+  // TODO: Review USGS API and optimize limit.
   // /////////////////////////////////////////////
   app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
   app.use(bodyParser.json({limit: '10mb'}));
-  // /////////////////////////////////////////////
-  //Static route was originally as follows, but since you need to go up a directory
-  // you need to type that in, instead of just client, since client here would be
-  // server/client
-  // /////////////////////////////////////////////
-  //app.use(express.static(path.join(__dirname, 'client')));
-
   app.use(express.static(path.join(__dirname, './../client')));
 
 // /////////////////////////////////////////////
 // ROUTES:
 // /////////////////////////////////////////////
 
-// app.get('/', function (req, res) {
-//   res.sendFile(path.join(__dirname, '../client', 'index.html'));
-// });
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
+});
 
 // /////////////////////////////////////////////
-// APICHE: cache and set req time for USGS Api
+// APICHE: cache and set req time for USGS api req
+// STATUS: cache working, API in Progress
+// TODO: Integrate into API
 // /////////////////////////////////////////////
 
-//  |-- STATUS: Working  USE: enable when ready to use real data --|
-//  app.get('/', apicache('5 minutes'), usgsController.getData, function (req, res) {
-//   res.send('Hello World!');
-//  });
+  //  app.get('/', apicache('5 minutes'), usgsController.getData,
+  //          function (req, res) {
+  //           res.send('Hello World!');
+  //          });
+
+ app.get('/', apicache('5 minutes'), usgsController.getData,
+         function (req, res) {
+          res.sendStatus(200);
+         });
 
 // /////////////////////////////////////////////
 // POSTMAN: dev route to test usgs api's
 // /////////////////////////////////////////////
-app.post('/usgsData', function(req, res){
-  console.log(JSON.stringify(req.body, null, '\t'));
-  res.send(JSON.stringify(req.body, null, '\t'));
+app.post('/usgsData', usgsController.getData, usgsController.findLocation,  function(req, res, next){
+  // console.log(JSON.stringify(req.body, null, '\t'));
+  // res.send(JSON.stringify(req.body, null, '\t'));
+  res.send('got it');
 } );
 
 // /////////////////////////////////////////////
-// START SERVER
+// START SERVER:
 // /////////////////////////////////////////////
 app.listen(3000, function () {
   console.log('Quake App running on port 3000!');
