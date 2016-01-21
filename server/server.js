@@ -49,11 +49,11 @@ app.get('/', function (req, res) {
   //           res.send('Hello World!');
   //          });
 
- app.get('/', apicache('5 minutes'), usgsController.getData,
-         function (req, res) {
+ // Pull data from our server and APIcache
+ app.get('/data', apicache('5 minutes'), usgsController.getData, usgsController.findLocation,
+         function (req, res, next) {
           res.sendStatus(200);
          });
-
 // /////////////////////////////////////////////
 // POSTMAN: dev route to test usgs api's
 // /////////////////////////////////////////////

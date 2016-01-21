@@ -39,7 +39,7 @@ var usgsController = {
 
     const twoDayDataAPI = 'http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson';
 
-    request(twoDayDataAPI , function (error, response) {
+    request(twoDayDataAPI , function (error, response, body) {
             if(error){
                 return console.log('Error:', error);
             }
@@ -48,7 +48,9 @@ var usgsController = {
                 return console.log('Invalid Status Code Returned:', response.statusCode);
             }
             //console.log('gotData from USGS');
-            //console.log(body);
+            // console.log(body);
+            //set the req body to body
+            req.body = body;
             console.log('get finished');
             next();
             //res.send(response);
@@ -59,30 +61,30 @@ var usgsController = {
   findLocation:  function(req, res, next){
     var bubbles = [];
     console.log('finding USA locations');
-    var quakeLocation = req.body;
-    // console.log(quakeLocation);
+    //PARSE THE DATA !!
+    var quakeLocation = JSON.parse(req.body);
+    // console.log(quakeLocation.features);
 
     for(var i = 0; i < quakeLocation.features.length; i++){
         // console.log(data.features[i], "DJA")
         var name = quakeLocation.features[i].properties.title;
         var placeName = name.slice(name.lastIndexOf(',')+2);
-
+    //FILTER OUT ANYTHING NOT IN AMERICA
+    //Add place name, lat, long, magnitude, time, and alert scale
         if(states.indexOf(placeName)>-1){
             bubbles.push({
+                "alert": quakeLocation.features[i].properties.alert,
+                "time": quakeLocation.features[i].properties.time,
                 "place": name,
                 "latitude": quakeLocation.features[i].geometry.coordinates[1],
                 "longitude": quakeLocation.features[i].geometry.coordinates[0],
+                //Radius is set by multiplying magnitude by 4, can adjust to scales later
                 "radius": quakeLocation.features[i].properties.mag*4
             });
         }
     }
-     console.log('Map bubbles:    ', bubbles)
-    map.bubbles(bubbles, {
-        popupTemplate: function(geo, quakeLocation) {
-            return "<div class='hoverinfo'>Earthquake for " + quakeLocation.place + "";
-        }
-    })
-
+    //Stringify it in order to send
+    res.send(JSON.stringify(bubbles))
   }
 
 
